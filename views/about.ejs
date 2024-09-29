@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - SkillConnect</title>
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #FEFAE0;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header */
+        header {
+            background-color: #A8B887; /* Darkened green */
+            padding: 15px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            color: #A67850; /* Darkened orange */
+        }
+
+        header p {
+            font-size: 1.2em;
+            margin-top: 10px;
+            color: #555;
+        }
+
+        header a {
+            color: #C9D2A7; /* Darkened green */
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 15px;
+            transition: color 0.3s ease;
+        }
+
+        header a:hover {
+            color: #C0C49B; /* Darkened green for hover */
+        }
+
+        /* Main Content */
+        main {
+            padding: 80px 20px 40px;
+            text-align: center;
+        }
+
+        main h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #A67850; /* Darkened orange */
+        }
+
+        main section {
+            margin-bottom: 40px;
+        }
+
+        main p {
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        .team-member {
+            background-color: #C9D2A7; /* Darkened green */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            display: inline-block;
+            text-align: center;
+            width: 200px;
+        }
+
+        .team-member img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-bottom: 10px;
+        }
+
+        .team-member h3 {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #A67850; /* Darkened orange */
+        }
+
+        .team-member p {
+            font-size: 1em;
+            color: #666;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #A8B887; /* Darkened green */
+            padding: 20px;
+            text-align: center;
+            color: #C9D2A7; /* Darkened green */
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        footer h3 {
+            margin: 0 0 10px;
+            font-size: 1.5em;
+            color: #A67850; /* Darkened orange */
+        }
+
+        footer p {
+            font-size: 1em;
+            margin: 0;
+            color: #C9D2A7; /* Darkened green */
+        }
+
+        footer a {
+            color: #C9D2A7; /* Darkened green */
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #C0C49B; /* Darkened green for hover */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .team-member {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>About SkillConnect</h1>
+        <% if (user) { %>
+            <p>Hello, <%= user.name %>! <a href="/logout">Logout</a></p>
+        <% } else { %>
+            <a href="/">Home</a> | <a href="/login">Login</a> | <a href="/register">Register</a> 
+        <% } %>
+    </header>
+
+    <main>
+        <section>
+            <h2>Our Mission</h2>
+            <p>At SkillConnect, we aim to bridge the gap between skilled professionals and clients looking for expertise. Our platform offers a seamless experience for both skill seekers and providers.</p>
+        </section>
+        <section>
+            <h2>Our Team</h2>
+            <% teamMembers.forEach(member => { %>
+                <div class="team-member">
+                    <img src="<%= member.image %>" alt="<%= member.name %>">
+                    <h3><%= member.name %></h3>
+                    <p><%= member.role %></p>
+                </div>
+            <% }) %>
+        </section>
+    </main>
+
+    <footer>
+        <h3>SkillConnect</h3>
+        <p>&copy; 2024 SkillConnect. All rights reserved.</p>
+        <a href="/contact">Contact</a> | <a href="/privacy">Privacy Policy</a>
+    </footer>
+</body>
+</html>

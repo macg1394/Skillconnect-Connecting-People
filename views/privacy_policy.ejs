@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/styles.css">
+    <title>Privacy Policy - SkillConnect</title>
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #FEFAE0;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Navigation Bar */
+        header {
+            background-color: #A8B887; /* Darkened green */
+            padding: 15px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            color: #A67850; /* Darkened orange */
+        }
+
+        header p {
+            font-size: 1.2em;
+            margin-top: 10px;
+            color: #555;
+        }
+
+        header a {
+            color: #C9D2A7; /* Darkened green */
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 15px;
+            transition: color 0.3s ease;
+        }
+
+        header a:hover {
+            color: #C0C49B; /* Darkened green for hover */
+        }
+
+        /* Main Content */
+        main {
+            padding: 80px 20px 40px;
+            text-align: center;
+        }
+
+        .hero {
+            background: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('/images/hero-bg.jpg') no-repeat center center/cover;
+            padding: 80px 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+        }
+
+        .hero h2 {
+            font-size: 2.5em;
+            margin: 0 0 20px;
+            color: #A67850; /* Darkened orange */
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            color: #666;
+        }
+
+        .content {
+            padding: 20px;
+            text-align: left;
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: #FFF;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .content h2 {
+            font-size: 2em;
+            color: #A67850; /* Darkened orange */
+            margin-top: 0;
+        }
+
+        .content p {
+            font-size: 1em;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .content ul {
+            list-style-type: disc;
+            padding-left: 20px;
+        }
+
+        .content li {
+            margin-bottom: 10px;
+        }
+
+        /* Footer Section */
+        footer {
+            background-color: #A8B887; /* Darkened green */
+            padding: 20px;
+            text-align: center;
+            color: #C9D2A7; /* Darkened green */
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        footer h3 {
+            margin: 0 0 10px;
+            font-size: 1.5em;
+            color: #A67850; /* Darkened orange */
+        }
+
+        footer p {
+            font-size: 1em;
+            margin: 0;
+            color: #C9D2A7; /* Darkened green */
+        }
+
+        footer a {
+            color: #C9D2A7; /* Darkened green */
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #C0C49B; /* Darkened green for hover */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Welcome to SkillConnect</h1>
+        <div class="circle"><a href="/profile">Profile</a></div>
+        <% if (user) { %>
+            <p>Hello, <%= user.username %>! <a href="/logout">Logout</a></p>
+            <a href="/search_people">People</a>
+            <a href="/search">Showcases</a>
+            <a href="/post">Post</a>
+        <% } else { %>
+            <a href="/">Home</a> | <a href="/login">Login</a> | <a href="/register">Register</a> | <a href="/about">About Us</a>
+        <% } %>
+    </header>
+
+    <main>
+        <section class="hero">
+            <h2>Privacy Policy</h2>
+            <p>Your privacy is important to us. Please read our privacy policy carefully to understand how we collect, use, and protect your personal information.</p>
+        </section>
+
+        <section class="content">
+            <h2>1. Introduction</h2>
+            <p>Welcome to SkillConnect! This Privacy Policy explains how we handle your personal information when you use our website and services.</p>
+
+            <h2>2. Information We Collect</h2>
+            <p>We collect information to provide better services to our users. The types of information we may collect include:</p>
+            <ul>
+                <li><strong>Personal Information:</strong> Name, email address, phone number, etc.</li>
+                <li><strong>Usage Data:</strong> Information on how you use our website and services.</li>
+                <li><strong>Cookies and Tracking Technologies:</strong> Data collected through cookies to improve your experience.</li>
+            </ul>
+
+            <h2>3. How We Use Your Information</h2>
+            <p>We use the information we collect for various purposes, including:</p>
+            <ul>
+                <li>Providing and improving our services.</li>
+                <li>Personalizing your experience.</li>
+                <li>Communicating with you about updates and offers.</li>
+            </ul>
+
+            <h2>4. How We Protect Your Information</h2>
+            <p>We implement security measures to ensure your personal information is protected from unauthorized access or disclosure.</p>
+
+            <h2>5. Sharing Your Information</h2>
+            <p>We do not sell or rent your personal information to third parties. We may share your information with trusted partners for specific purposes, such as:</p>
+            <ul>
+                <li>Service providers who assist in delivering our services.</li>
+                <li>Legal authorities when required by law.</li>
+            </ul>
+
+            <h2>6. Your Choices</h2>
+            <p>You have the right to access, correct, or delete your personal information. You can also opt-out of receiving promotional communications from us.</p>
+
+            <h2>7. Changes to This Privacy Policy</h2>
+            <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page.</p>
+
+            <h2>8. Contact Us</h2>
+            <p>If you have any questions or concerns about this Privacy Policy, please contact us at <a href="mailto:support@skillconnect.com">support@skillconnect.com</a>.</p>
+        </section>
+    </main>
+
+    <footer>
+        <h3>SkillConnect</h3>
+        <p>&copy; 2024 SkillConnect. All rights reserved.</p>
+        <a href="/about">About Us</a> | <a href="/contact">Contact</a> | <a href="/privacy">Privacy Policy</a>
+    </footer>
+</body>
+</html>

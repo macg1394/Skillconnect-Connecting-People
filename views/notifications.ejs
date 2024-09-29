@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notifications</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #FEFAE0;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #A8B887;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        header a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        header a:hover {
+            color: #E9EDC9;
+        }
+
+        .notification-container {
+            width: 60%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #F9F9F9;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .notification {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #E9EDC9;
+            border-radius: 5px;
+        }
+
+        .notification button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #D4A373;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .notification button:hover {
+            background-color: #C4976F;
+        }
+
+        footer {
+            background-color: #A8B887;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+
+        footer h3 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        footer a {
+            color: white;
+            margin: 0 10px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        footer a:hover {
+            color: #E9EDC9;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1>SkillConnect</h1>
+        <div>
+            <% if (user) { %>
+                <p>Hello, <%= user.username %>! <a href="/logout">Logout</a></p>
+                <a href="/profile">Profile</a>
+                <a href="/search">Showcases</a>
+                <a href="/notifications">Notifications</a>
+            <% } else { %>
+                <a href="/">Home</a>
+                <a href="/login">Login</a>
+                <a href="/register">Register</a>
+                <a href="/about">About Us</a>
+            <% } %>
+        </div>
+    </header>
+
+    <!-- Notifications -->
+    <main>
+        <h2>Notifications</h2>
+        <% if (invitations && invitations.length > 0) { %>
+            <% invitations.forEach(invitation => { %>
+                <div class="notification">
+                    <p><strong>From:</strong> <%= invitation.sender_username %></p>
+                    <p><strong>Status:</strong> <%= invitation.status.charAt(0).toUpperCase() + invitation.status.slice(1) %></p>
+                    <p><strong>Sent At:</strong> <%= new Date(invitation.created_at).toLocaleDateString() %></p>
+                    <% if (invitation.status === 'pending') { %>
+                        <form id="responseForm" action="/invitations/respond" method="POST" onsubmit="return handleFormSubmit(this);">
+                            <input type="hidden" name="invitationId" value="<%= invitation.invitation_id %>">
+                            <button type="button" onclick="submitResponse('accepted')">Accept</button>
+                            <button type="button" onclick="submitResponse('rejected')">Reject</button>
+                        </form>
+                    <% } else if (invitation.status === 'accepted') { %>
+                        <a href="/chat/<%= invitation.sender_id %>">
+                            <button>Chat with <%= invitation.sender_username %></button>
+                        </a>
+                    <% } %>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>No notifications found.</p>
+        <% } %>
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <h3>SkillConnect</h3>
+        <p>&copy; 2024 SkillConnect. All rights reserved.</p>
+        <a href="/about">About Us</a> | <a href="/contact">Contact</a> | <a href="/privacy">Privacy Policy</a>
+    </footer>
+
+    <script>
+        // Handle form submission with AJAX
+        function submitResponse(response) {
+            const form = document.getElementById('responseForm');
+            const formData = new FormData(form);
+            formData.append('response', response);
+    
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    invitationId: formData.get('invitationId'),
+                    response: response
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message); // Display the server response message
+                    location.reload(); // Reload the page to reflect the updated status
+                } else if (data.error) {
+                    alert('Error: ' + data.error); // Display the error message
+                } else {
+                    alert('Unknown response from server');
+                }
+            })
+            .catch(error => {
+                console.error('Error handling invitation response:', error);
+                alert('Failed to respond to invitation');
+            });
+    
+            return false; // Prevent the default form submission
+        }
+    
+        function handleFormSubmit(form) {
+            // This function will be overridden by submitResponse
+            return false;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - SkillConnect</title>
+    <style>
+        /* Base Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #FEFAE0;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Header */
+        header {
+            background-color: #A8B887; /* Darkened green */
+            padding: 15px 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        header h1 {
+            font-size: 2.5em;
+            margin: 0;
+            color: #A67850; /* Darkened orange */
+        }
+
+        header p {
+            font-size: 1.2em;
+            margin-top: 10px;
+            color: #555;
+        }
+
+        header a {
+            color: #C9D2A7; /* Darkened green */
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 15px;
+            transition: color 0.3s ease;
+        }
+
+        header a:hover {
+            color: #C0C49B; /* Darkened green for hover */
+        }
+
+        /* Main Content */
+        main {
+            padding: 80px 20px 40px;
+            text-align: center;
+        }
+
+        main h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #A67850; /* Darkened orange */
+        }
+
+        main p {
+            font-size: 1.2em;
+            color: #666;
+        }
+
+        /* Contact Form */
+        .contact-form {
+            background-color: #C9D2A7; /* Darkened green */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: inline-block;
+            text-align: left;
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .contact-form label {
+            display: block;
+            font-size: 1.1em;
+            margin: 10px 0 5px;
+            color: #333;
+        }
+
+        .contact-form input, .contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #A67850; /* Darkened orange */
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+
+        .contact-form button {
+            background-color: #A67850; /* Darkened orange */
+            color: #C9D2A7; /* Darkened green */
+            border: none;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .contact-form button:hover {
+            background-color: #C0C49B; /* Darkened green for hover */
+        }
+
+        /* Footer */
+        footer {
+            background-color: #A8B887; /* Darkened green */
+            padding: 20px;
+            text-align: center;
+            color: #C9D2A7; /* Darkened green */
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        footer h3 {
+            margin: 0 0 10px;
+            font-size: 1.5em;
+            color: #A67850; /* Darkened orange */
+        }
+
+        footer p {
+            font-size: 1em;
+            margin: 0;
+            color: #C9D2A7; /* Darkened green */
+        }
+
+        footer a {
+            color: #C9D2A7; /* Darkened green */
+            text-decoration: none;
+            font-weight: bold;
+            margin: 0 10px;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #C0C49B; /* Darkened green for hover */
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .contact-form {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Contact Us</h1>
+        <% if (user) { %>
+            <p>Hello, <%= user.name %>! <a href="/logout">Logout</a></p>
+        <% } else { %>
+            <a href="/">Home</a> | <a href="/login">Login</a> | <a href="/register">Register</a> | <a href="/about">About Us</a>
+        <% } %>
+    </header>
+
+    <main>
+        <section>
+            <h2>Get in Touch</h2>
+            <form class="contact-form" action="/contact" method="POST">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" rows="5" required></textarea>
+                <button type="submit">Send Message</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <h3>SkillConnect</h3>
+        <p>&copy; 2024 SkillConnect. All rights reserved.</p>
+        <a href="/about">About Us</a> |  <a href="/privacy">Privacy Policy</a>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Room</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #FEFAE0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            width: 100%;
+            background-color: #A8B887;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 2rem;
+        }
+
+        main {
+            width: 80%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #F9F9F9;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        #chat-messages {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #FFFFFF;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #E9EDC9;
+            border-radius: 5px;
+        }
+
+        .message strong {
+            display: block;
+        }
+
+        .message small {
+            color: #888;
+        }
+
+        form {
+            display: flex;
+            gap: 10px;
+        }
+
+        #messageInput {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #D4A373;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #C4976F;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Chat Room</h1>
+    </header>
+    <main>
+        <h2>Chat Room ID: <%= chatRoomId %></h2>
+        <div id="chat-messages" aria-live="polite">
+            <% messages.forEach(message => { %>
+                <div class="message">
+                    <strong><%= message.username %>:</strong>
+                    <p><%= message.message %></p>
+                    <small><%= new Date(message.created_at).toLocaleString() %></small>
+                </div>
+            <% }) %>
+        </div>
+        <form id="messageForm">
+            <input type="text" id="messageInput" placeholder="Type your message here..." aria-label="Type your message" required>
+            <button type="submit">Send</button>
+        </form>
+    </main>
+    <script>
+        document.getElementById('messageForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value;
+            const chatRoomId = '<%= chatRoomId %>'; // Set dynamically from the server
+
+            fetch('/messages', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chatRoomId,
+                    message
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    messageInput.value = ''; // Clear the input
+                    loadMessages(); // Function to reload messages
+                } else if (data.error) {
+                    alert('Error: ' + data.error);
+                }
+            })
+            .catch(error => {
+                console.error('Error sending message:', error);
+                alert('Failed to send message');
+            });
+        });
+
+        function loadMessages() {
+            fetch(`/messages/${'<%= chatRoomId %>'}`)
+            .then(response => response.json())
+            .then(messages => {
+                const chatMessages = document.getElementById('chat-messages');
+                chatMessages.innerHTML = ''; // Clear the chat messages
+
+                messages.forEach(message => {
+                    const messageDiv = document.createElement('div');
+                    messageDiv.classList.add('message');
+                    messageDiv.innerHTML = `
+                        <strong>${message.username}:</strong>
+                        <p>${message.message}</p>
+                        <small>${new Date(message.created_at).toLocaleString()}</small>
+                    `;
+                    chatMessages.appendChild(messageDiv);
+                });
+
+                chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to the bottom
+            });
+        }
+
+        // Load messages on page load
+        loadMessages();
+
+        // Polling every 5 seconds to get new messages
+        setInterval(loadMessages, 5000);
+    </script>
+</body>
+</html>

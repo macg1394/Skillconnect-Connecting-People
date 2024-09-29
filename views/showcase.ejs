@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Showcase Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2 {
+            color: #D4A373;
+        }
+
+        p {
+            font-size: 18px;
+            color: #333;
+        }
+
+        img {
+            width: 100%;
+            max-width: 300px;
+            height: auto;
+            display: block;
+            margin: 20px 0;
+        }
+
+        .skills {
+            margin-top: 20px;
+            font-style: italic;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Showcase Details</h1>
+        <h2><%= showcase.title %></h2>
+        <p><%= showcase.description %></p>
+
+        <% if (showcase.image_url) { %>
+            <img src="<%= showcase.image_url %>" alt="<%= showcase.title %>" />
+        <% } else { %>
+            <p>No image available.</p>
+        <% } %>
+
+        <div class="skills">
+            <p>Skills: <%= showcase.skills %></p>
+        </div>
+    </div>
+</body>
+</html>
