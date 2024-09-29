@@ -1,14 +1,13 @@
 const express = require('express');
 const router = express.Router();
-
-// Route for the About Us page
+const db = require('../config/database');
 router.get('/about', (req, res) => {
-    console.log('About Us route accessed');  // Debug log
-    const teamMembers = [
-        { name: 'Mansi', role: 'Founder', image: '/images/default_profile_photo.jpg' },
-        { name: 'Kritika', role: 'co-Founder', image: '/images/default_profile_photo.jpg' }
-    ];
-    res.render('about', { teamMembers, user: req.user });
+    db.query('SELECT * FROM team_members', (err, results) => {
+        if (err) throw err;
+        res.render('about', { team_members: results,user: req.user });
+    });
 });
-
+router.get('/services', (req, res) => {
+    res.render('services', {user: req.user });
+});
 module.exports = router;

@@ -19,13 +19,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });  // Initialize multer with the storage configuration
 
 router.use(bodyParser.urlencoded({ extended: true }));
-
-// Render the 'index' page
-router.get('/', (req, res) => {
-        res.render('index', { user: req.user });
-    
-});
-
 // Render the 'search_people' page
 router.get('/search_people', (req, res) => {
     const sql = `

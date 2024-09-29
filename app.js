@@ -43,6 +43,8 @@ app.use(express.static('public'));
 app.use(require('./routes/index'));
 app.use(require('./routes/auth'));
 app.use(require('./routes/about'));
+app.use(require('./routes/home'));
+// app.use(require('./routes/services'));
 const contactRoute = require('./routes/contact');
 app.use(contactRoute);
 
@@ -75,6 +77,6 @@ app.use(contactRoute);
 //     });
 // });
 const PORT = process.env.PORT || 3001;
-server.listen(PORT, () => {
+app.listen(PORT, () => {
     console.log(`Server started on http://localhost:${PORT}`);
 });
