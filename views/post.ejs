@@ -1,30 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Post Listings and Invitations</title>
-    <link rel="stylesheet" href="/styles.css">
-</head>
-<body>
-    <!-- Header Section -->
-    <header>
-        <h1>SkillConnect</h1>
-        <div>
-            <% if (user) { %>
-                <p>Hello, <%= user.username %>! <a href="/logout">Logout</a></p>
-                <a href="/profile">Profile</a>
-                <a href="/search">Showcases</a>
-                <a href="/notifications">Notifications</a>
-            <% } else { %>
-                <a href="/">Home</a>
-                <a href="/login">Login</a>
-                <a href="/register">Register</a>
-                <a href="/about">About Us</a>
-            <% } %>
-        </div>
-    </header>
-
+<%- include("partials/header") -%>
     <!-- Search and Job Listings -->
     <div class="top-container">
         <div class="search-container">
@@ -65,11 +39,7 @@
     <% } %>
     
     <!-- Footer Section -->
-    <footer>
-        <h3>SkillConnect</h3>
-        <p>&copy; 2024 SkillConnect. All rights reserved.</p>
-        <a href="/about">About Us</a> | <a href="/contact">Contact</a> | <a href="/privacy">Privacy Policy</a>
-    </footer>
+    <%- include("partials/footer") -%>
 
     <script>
         // Function to search for jobs

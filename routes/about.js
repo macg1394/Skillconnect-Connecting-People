@@ -10,4 +10,7 @@ router.get('/about', (req, res) => {
 router.get('/services', (req, res) => {
     res.render('services', {user: req.user });
 });
+router.get('/privacy', (req, res) => {
+    res.render('privacy_policy', { user: req.user }); // Pass the user object if needed
+});
 module.exports = router;

@@ -1,26 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/styles.css">
-    <title>SkillConnect - People Search</title>
-</head>
-<body>
-    <!-- Header Section -->
-    <header>
-        <h1>Welcome to SkillConnect</h1>
-        <div class="circle"><a href="/profile">Profile</a></div>
-        <% if (user) { %>
-            <p>Hello, <%= user.username %>! <a href="/logout">Logout</a></p>
-            <a href="/search">Showcases</a>
-            <a href="/post">Post</a>
-        <% } else { %>
-            <a href="/">Home</a> | <a href="/login">Login</a> | <a href="/register">Register</a> | <a href="/about">About Us</a>
-        <% } %>
-    </header>
-
-    <!-- Main Content Section -->
+<%- include("partials/header") -%>
     <main>
         <div class="container">
             <div class="search-container">
@@ -31,7 +9,7 @@
             <div id="peopleContainer">
                 <% if (people.length > 0) { %>
                     <% people.forEach(person => { %>
-                        <div class="person-card">
+                        <div class="person_card">
                             <img src="<%= person.profile_photo_url || '/images/default_profile_photo.jpg' %>" alt="<%= person.username %>">
                             <h3><%= person.username %></h3>
                             <p>Skills: <%= person.skills %></p>
@@ -46,11 +24,7 @@
     </main>
 
     <!-- Footer Section -->
-    <footer>
-        <h3>SkillConnect</h3>
-        <p>&copy; 2024 SkillConnect. All rights reserved.</p>
-        <a href="/about">About Us</a> | <a href="/contact">Contact</a> | <a href="/privacy">Privacy Policy</a>
-    </footer>
+    <%- include("partials/footer") -%>
 
     <script>
         // Search functionality triggered on button click

@@ -49,6 +49,7 @@ app.use(require('./routes/index'));
 app.use(require('./routes/my_profile'));
 app.use(require('./routes/post'));
 app.use(require('./routes/profile_photo'));
+app.use(require('./routes/search'));
 app.use(require('./routes/showcase'));
 app.use(require('./routes/skills'));
 // app.use(require('./routes/services'));
