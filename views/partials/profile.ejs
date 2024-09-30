@@ -1,0 +1,149 @@
+
+    <div class="profileHeader">
+        <div class="profilePhoto">
+            <img id="profilePhoto" src="<%= user.profile_photo ? user.profile_photo.replace(/\\/g, '/') : '/images/default_profile_photo.jpg' %>" alt="Profile Photo">
+            <div id="photoOverlay" class="overlay">
+                <div class="overlayContent">
+                    <img id="enlargedPhoto" src="<%= user.profile_photo ? user.profile_photo : '/images/default_profile_photo.jpg' %>" alt="Enlarged Photo">
+                    <button id="changePhotoBtn">Change Profile Photo</button>
+                    <button id="deletePhotoBtn">Delete Profile Photo</button>
+                </div>
+            </div>
+        </div> 
+        <form id="uploadPhotoForm" action="/upload_profile_photo" method="POST" enctype="multipart/form-data" style="display: none;">
+            <input type="file" name="profile_photo" accept="image/*" required>
+            <button type="submit">Upload</button>
+        </form>
+
+        
+        <div id="editProfileModal" class="modal">
+            <div class="modalContent">
+                <span class="close" id="closeModal">&times;</span>
+                <h2>Edit Profile</h2>
+                <form id="editProfileForm">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" value="<%= user.username %>">
+    
+                    <label for="availability">Availability:</label>
+                    <select id="availability" name="availability">
+                        <option value="yes" <%= user.availability === 'yes' ? 'selected' : '' %> >Yes</option>
+                        <option value="no" <%= user.availability === 'no' ? 'selected' : '' %> >No</option>
+                    </select>
+    
+                    <button type="submit">Save Changes</button>
+                </form>
+            </div>
+        </div>
+        <div class="profileDetails">
+            <h2 class="name"><%= user.username %></h2>
+            <p class="availability">Available for Work: <%= user.availability %></p>
+            <p class="rating">Rating: 
+                <% for (let i = 1; i <= 5; i++) { %>
+                    <% if (i <= user.rating) { %>
+                        ★
+                    <% } else { %>
+                        ☆
+                    <% } %>
+                <% } %>
+            </p>
+        </div>
+        <button class="editProfile">Edit Profile</button>
+    </div>
+    <script>
+         const profilePhoto = document.getElementById('profilePhoto');
+    const photoOverlay = document.getElementById('photoOverlay');
+    const enlargedPhoto = document.getElementById('enlargedPhoto');
+    const changePhotoBtn = document.getElementById('changePhotoBtn');
+    const deletePhotoBtn = document.getElementById('deletePhotoBtn');
+    const uploadPhotoForm = document.getElementById('uploadPhotoForm');
+
+    // Show overlay and enlarged photo on click
+    profilePhoto.addEventListener('click', function () {
+        photoOverlay.style.display = 'flex';
+    });
+
+    // Hide overlay on clicking outside the enlarged photo
+    photoOverlay.addEventListener('click', function (event) {
+        if (event.target === photoOverlay) {
+            photoOverlay.style.display = 'none';
+        }
+    });
+
+    // Show upload form when "Change Profile Photo" button is clicked
+    changePhotoBtn.addEventListener('click', function () {
+        console.log('Change photo button clicked');
+        uploadPhotoForm.style.display = 'block';
+        photoOverlay.style.display = 'none'; // Hide overlay
+    });
+
+    // Handle delete photo action
+    deletePhotoBtn.addEventListener('click', function () {
+        // Make an AJAX request to delete the profile photo
+        fetch('/delete_profile_photo', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ action: 'delete' })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Remove profile photo from UI
+                profilePhoto.src = '/images/default_profile_photo.jpg';
+                photoOverlay.style.display = 'none'; // Hide overlay
+            } else {
+                alert('Failed to delete photo');
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting photo:', error);
+        });
+    });
+
+    document.querySelector('.editProfile').addEventListener('click', function () {
+            document.getElementById('editProfileModal').style.display = 'block';
+        });
+
+        // Close the modal when the close button is clicked
+        document.getElementById('closeModal').addEventListener('click', function () {
+            document.getElementById('editProfileModal').style.display = 'none';
+        });
+
+        // Handle form submission
+        document.getElementById('editProfileForm').addEventListener('submit', function (event) {
+    event.preventDefault();
+
+    const username = document.getElementById('username').value.trim();
+    const availability = document.getElementById('availability').value.trim();
+
+    if (!username || !availability) {
+        alert('Username and availability cannot be empty.');
+        return;
+    }
+
+    console.log("Username:", username);
+    console.log("Availability:", availability);
+
+    // Send the updated data to the server
+    fetch('/update_profile', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, availability })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert('Profile updated successfully!');
+            location.reload(); // Reload the page to show updated data
+        } else {
+            alert('Failed to update profile.');
+        }
+    })
+    .catch(error => {
+        console.error('Error updating profile:', error);
+    });
+});
+    </script>

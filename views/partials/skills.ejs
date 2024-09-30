@@ -1,0 +1,107 @@
+
+<div class="skills">
+    <h3>Skills</h3>
+    <div class="skillsRow">
+        <% if (skills.length > 0) { %>
+            <% skills.forEach(skill => { %>
+                <div class="skillItem">
+                    <span><%= skill.skill_name %></span>
+                    <button class="removeSkill" data-skill-id="<%= skill.skill_id %>">✖</button>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>No skills added yet.</p>
+        <% } %>
+        <button class="addSkill">Add Skill</button>
+    </div>
+</div>
+<div id="skillModal" class="modal">
+    <div class="modalContent">
+        <span class="skillClose" class="close">&times;</span>
+        <h2>Select Skills</h2>
+        <form id="addSkillForm">
+            <div id="skillList">
+    <!-- Skill options will be dynamically added here -->
+            </div>
+            <button type="submit">Add Skills</button>
+        </form>
+    </div>
+</div>
+<script>
+    const skillModal = document.getElementById('skillModal');
+    const openSkillModalButton = document.querySelector('.addSkill');
+    const closeModalButton = document.querySelector('.modal .skillClose');
+    const skillList = document.getElementById('skillList');
+
+    openSkillModalButton.addEventListener('click', function () {
+        fetch('/skills') // Fetch available skills
+            .then(response => response.json())
+            .then(data => {
+                skillList.innerHTML = ''; // Clear existing options
+
+                data.skills.forEach(skill => {
+                    const skillOption = document.createElement('div');
+                    skillOption.className = 'skillOption';
+                    skillOption.innerHTML = `
+                        <input type="checkbox" id="skill-${skill.skill_id}" value="${skill.skill_id}">
+                        <label for="skill-${skill.skill_id}">${skill.skill_name}</label>
+                    `;
+                    skillList.appendChild(skillOption);
+                });
+
+                skillModal.style.display = 'block'; // Show modal
+            })
+            .catch(error => console.error('Error fetching skills:', error));
+    });
+
+    closeModalButton.addEventListener('click', function () {
+        skillModal.style.display = 'none'; // Hide modal
+    });
+
+    document.getElementById('addSkillForm').addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const selectedSkills = Array.from(document.querySelectorAll('#skillList input:checked'))
+            .map(input => input.value);
+
+        fetch('/update_skills', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ selectedSkills })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Skills updated successfully!');
+                location.reload(); // Reload page to show updated skills
+            } else {
+                alert('Failed to update skills.');
+            }
+        })
+        .catch(error => console.error('Error updating skills:', error));
+    });
+    document.querySelectorAll('.removeSkill').forEach(button => {
+        button.addEventListener('click', function () {
+            const skillId = this.getAttribute('data-skill-id');
+
+            fetch('/remove_skill', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ skillId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    this.parentElement.remove(); // Remove skill from UI
+                } else {
+                    alert('Failed to remove skill.');
+                }
+            })
+            .catch(error => console.error('Error removing skill:', error));
+        });
+    });
+</script>

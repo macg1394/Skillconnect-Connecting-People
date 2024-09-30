@@ -1,0 +1,138 @@
+
+
+<div class="showcases">
+    <h3>Showcases</h3>
+    <div class="showcaseGrid" id="showcaseGrid">
+        <% if (showcases.length > 0) { %>
+            <% showcases.forEach(showcase => { %>
+                <div class="showcaseItem">
+                    <span><%= showcase.title %></span>
+                    <div><%= showcase.description %></div>
+                    <% if (showcase.image_url) { %>
+                        <img src="<%= showcase.image_url %>" alt="Showcase Image" style="max-width: 200px; height: auto;"> 
+                    <% } else { %>
+                        <p>No image available</p>
+                    <% } %>
+                    <button class="removeShowcase" data-showcase-id="<%= showcase.showcase_id %>">✖</button>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p>No showcases added yet.</p>
+        <% } %>
+    </div>
+    <button id="addShowcaseBtn">Add Showcase</button>
+</div>
+<div id="addShowcaseModal" class="modal">
+    <div class="modalContent">
+        <span class="skillClose close">&times;</span>
+        <h2>Add New Showcase</h2>
+        <form id="addShowcaseForm" enctype="multipart/form-data">
+            <label for="title">Title:</label>
+            <input type="text" id="title" name="title" required>
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" required></textarea>
+            <label for="image">Image:</label>
+            <input type="file" id="image" name="image" accept="image/*" required>
+            <label for="skills">Skills:</label>
+            <select id="skills" name="skills" multiple required>
+                <!-- Skill options will be dynamically populated here -->
+            </select>
+            <button type="submit">Add Showcase</button>
+        </form>
+    </div>
+</div>
+<script>
+
+document.querySelectorAll('.removeShowcase').forEach(button => {
+    button.addEventListener('click', function() {
+        const showcaseId = this.getAttribute('data-showcase-id');
+
+        // Confirm deletion
+        if (!confirm('Are you sure you want to delete this showcase?')) {
+            return;
+        }
+
+        // Send a request to delete the showcase
+        fetch('/delete_showcase', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ showcaseId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                // Optionally remove the deleted showcase from the DOM
+                // this.parentElement.remove(); // Remove the showcase from the page
+            } else {
+                alert(data.message || 'Failed to delete showcase.');
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting showcase:', error);
+        });
+    });
+});
+    document.getElementById('addShowcaseForm').addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission behavior
+
+    const title = document.getElementById('title').value;
+    const description = document.getElementById('description').value;
+    const imageFile = document.getElementById('image').files[0];
+    const skills = Array.from(document.getElementById('skills').selectedOptions).map(option => option.value);
+
+    // Create a FormData object to handle the form submission with a file
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+
+    if (imageFile) {
+        formData.append('image', imageFile); // Append the image file if present
+    }
+
+    formData.append('skills', JSON.stringify(skills)); // Convert skills array to a JSON string and append it
+
+    // Send data to the server via fetch API
+    fetch('/add_showcase', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // addShowcaseToGrid(data.showcase); // Function to add showcase to the grid dynamically
+            document.getElementById('addShowcaseModal').style.display = 'none'; // Hide the modal
+            document.getElementById('addShowcaseForm').reset(); // Reset the form after successful submission
+        } else {
+            alert('Failed to add showcase: ' + data.message); // Display error message if the addition fails
+        }
+    })
+    .catch(error => {
+        console.error('Error adding showcase:', error);
+    });
+});
+
+    // Open the modal
+document.getElementById('addShowcaseBtn').addEventListener('click', function() {
+    document.getElementById('addShowcaseModal').style.display = 'block';
+    fetch('/skills')
+    .then(response => response.json())
+    .then(data => {
+        const skillsSelect = document.getElementById('skills');
+        skillsSelect.innerHTML = '';
+        data.skills.forEach(skill => {
+            const option = document.createElement('option');
+            option.value = skill.skill_id;
+            option.textContent = skill.skill_name;
+            skillsSelect.appendChild(option);
+        });
+    });
+});
+
+// Close the modal
+document.querySelector('#addShowcaseModal .skillClose').addEventListener('click', function() {
+    document.getElementById('addShowcaseModal').style.display = 'none';
+});
+</script>

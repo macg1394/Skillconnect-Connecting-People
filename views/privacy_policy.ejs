@@ -1,25 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/styles.css">
-    <title>Privacy Policy - SkillConnect</title>
-</head>
-<body>
-    <header>
-        <h1>Welcome to SkillConnect</h1>
-        <div class="circle"><a href="/profile">Profile</a></div>
-        <% if (user) { %>
-            <p>Hello, <%= user.username %>! <a href="/logout">Logout</a></p>
-            <a href="/search_people">People</a>
-            <a href="/search">Showcases</a>
-            <a href="/post">Post</a>
-        <% } else { %>
-            <a href="/">Home</a> | <a href="/login">Login</a> | <a href="/register">Register</a> | <a href="/about">About Us</a>
-        <% } %>
-    </header>
 
+<%- include("partials/header") -%>
     <main>
         <section class="hero">
             <h2>Privacy Policy</h2>
@@ -66,11 +46,4 @@
             <p>If you have any questions or concerns about this Privacy Policy, please contact us at <a href="mailto:support@skillconnect.com">support@skillconnect.com</a>.</p>
         </section>
     </main>
-
-    <footer>
-        <h3>SkillConnect</h3>
-        <p>&copy; 2024 SkillConnect. All rights reserved.</p>
-        <a href="/about">About Us</a> | <a href="/contact">Contact</a> | <a href="/privacy">Privacy Policy</a>
-    </footer>
-</body>
-</html>
+    <%- include("partials/footer") -%>

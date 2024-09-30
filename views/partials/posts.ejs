@@ -1,0 +1,115 @@
+
+<div class="posts">
+    <h3>Posts</h3>
+        <div class="postGrid" id="postGrid">
+            <% if (posts.length > 0) { %>
+                <% posts.forEach(post => { %>
+                    <div class="postItem">
+                        <h4><%= post.title %></h4>
+                        <div><%= post.content %></div>
+                        <button class="removePost" data-post-id="<%= post.post_id %>">✖</button>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p>No posts added yet.</p>
+            <% } %>
+        </div>
+            <button class="addPost">Add Post</button>
+    <!-- <a href="#" class="showMorePosts">Show More Posts</a> -->
+</div>
+<div id="addPostModal" class="modal">
+    <div class="modalContent">
+        <span id="closePostModal" class="close"> &times;</span>
+    <form id="addPostForm">
+        <input type="text" id="postTitle" name="title" placeholder="Post Title" required>
+        <textarea id="postContent" name="content" placeholder="Post Content" required></textarea>
+        <select id="postSkills" name="skills" multiple required>
+            <!-- Dynamically populate with skill options -->
+        </select>
+        <button type="submit">Add Post</button>
+    </form>
+    </div>  
+</div>
+<script>
+document.querySelector('.addPost').addEventListener('click', function() {
+    document.getElementById('addPostModal').style.display = 'block';
+    fetch('/skills')
+    .then(response => response.json())
+    .then(data => {
+        const skillsSelect = document.getElementById('postSkills');
+        skillsSelect.innerHTML = '';
+        data.skills.forEach(skill => {
+            const option = document.createElement('option');
+            option.value = skill.skill_id;
+            option.textContent = skill.skill_name;
+            skillsSelect.appendChild(option);
+        });
+    });
+});
+    document.getElementById('closePostModal').addEventListener('click', function () {
+        document.getElementById('addPostModal').style.display = 'none';
+    });
+
+    document.getElementById('addPostForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const title = document.getElementById('postTitle').value;
+    const content = document.getElementById('postContent').value;
+    const skills = Array.from(document.getElementById('postSkills').selectedOptions).map(option => option.value);
+
+    const formData = {
+        title: title,
+        content: content,
+        skills: JSON.stringify(skills)
+    };
+
+    fetch('/add_post', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Code to add the new post to the grid dynamically
+            document.getElementById('addPostModal').style.display = 'none';
+            document.getElementById('addPostForm').reset();
+        } else {
+            alert('Failed to add post.');
+        }
+    })
+    .catch(error => {
+        console.error('Error adding post:', error);
+    });
+});
+
+document.querySelectorAll('.postItem .removePost').forEach(button => {
+    button.addEventListener('click', function() {
+        const postId = this.getAttribute('data-post-id');
+        if (!confirm('Are you sure you want to delete this post?')) {
+            return;
+        }
+        fetch('/delete_post', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ postId })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                // this.parentElement.remove(); // Remove the post from the page
+            } else {
+                alert(data.message || 'Failed to delete post.');
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting post:', error);
+        });
+    });
+});
+</script>

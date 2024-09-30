@@ -10,13 +10,13 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.get('/login', (req, res) => res.render('login'));
 router.get('/register', (req, res) => res.render('register'));
 router.post('/register', (req, res) => {
-    const { username, email, password } = req.body;
-    bcrypt.hash(password, 10, (err, hash) => {
+    const { username, email, password, city, locality, latitude, longitude } = req.body;
+        bcrypt.hash(password, 10, (err, hash) => {
         if (err) {
             console.error('Error hashing password:', err);
             return res.status(500).send('Server error');
         }
-        User.create({ username, email, password: hash }, (err, result) => {
+        User.create({ username, email, password: hash, city, locality, latitude, longitude }, (err, result) => {
             if (err) {
                 console.error('Error inserting user:', err);
                 return res.status(500).send('Server error');

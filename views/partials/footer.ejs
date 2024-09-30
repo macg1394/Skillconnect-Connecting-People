@@ -3,5 +3,14 @@
     <p>&copy; 2024 SkillConnect. All rights reserved.</p>
     <a href="/contact">Contact</a> | <a href="/privacy">Privacy Policy</a>
 </footer>
+<% if (user) { %>
+    <script >
+        const sidebar = document.getElementById('sidebar');
+        const hamburger = document.getElementById('hamburger');
+        hamburger.addEventListener('click', () => {
+            sidebar.classList.toggle('show');
+        });
+    </script>
+     <% } %>
 </body>
 </html>

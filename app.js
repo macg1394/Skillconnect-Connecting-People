@@ -40,10 +40,17 @@ require('./config/passport')(passport);
 
 app.use(express.static('public'));
 
-app.use(require('./routes/index'));
-app.use(require('./routes/auth'));
+
 app.use(require('./routes/about'));
+app.use(require('./routes/auth'));
+// app.use(require('./routes/contact'));
 app.use(require('./routes/home'));
+app.use(require('./routes/index'));
+app.use(require('./routes/my_profile'));
+app.use(require('./routes/post'));
+app.use(require('./routes/profile_photo'));
+app.use(require('./routes/showcase'));
+app.use(require('./routes/skills'));
 // app.use(require('./routes/services'));
 const contactRoute = require('./routes/contact');
 app.use(contactRoute);

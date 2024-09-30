@@ -1,44 +1,70 @@
 body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 20px;
-    background-color: #f4f4f4;
+    padding: 0;
+    display: flex; /* Use flexbox for layout */
 }
 
-form {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    max-width: 400px;
-    margin: 0 auto;
-}
-
-div {
-    margin-bottom: 10px;
-}
-
-label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-input {
+.container {
+    display: flex; /* Flexbox for the main container */
     width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
 }
 
-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #5cb85c;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+.sidebar {
+    width: 250px; /* Set the width of the sidebar */
+    background-color: #333; /* Dark background */
+    color: white; /* White text color */
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0,0,0,0.5); /* Slight shadow effect */
+    position: fixed; /* Keep the sidebar fixed */
+    left: -250px; /* Hide the sidebar off-screen initially */
+    transition: left 0.3s ease; /* Animation for sliding in */
 }
 
-button:hover {
-    background-color: #4cae4c;
+.sidebar.show {
+    left: 0; /* Show the sidebar when the class is added */
 }
+
+.sidebar h2 {
+    margin: 0;
+    padding: 0 0 10px 0;
+}
+
+.sidebar ul {
+    list-style-type: none; /* Remove bullet points */
+    padding: 0; /* Remove default padding */
+}
+
+.sidebar li {
+    margin: 15px 0; /* Spacing between items */
+}
+
+.sidebar a {
+    color: white; /* Link color */
+    text-decoration: none; /* Remove underline */
+}
+
+.sidebar a:hover {
+    text-decoration: underline; /* Underline on hover */
+    color: #f4f4f4; /* Lighter color on hover */
+}
+
+.content {
+    padding: 20px; /* Main content padding */
+    flex-grow: 1; /* Take remaining space */
+    background-color: #f4f4f4; /* Light background */
+    margin-left: 50px; /* Margin for the hamburger button */
+}
+
+.hamburger {
+    font-size: 30px; /* Size of the hamburger icon */
+    background: none; /* No background */
+    border: none; /* No border */
+    cursor: pointer; /* Pointer cursor */
+    position: absolute; /* Positioning the button */
+    top: 20px; /* Top margin */
+    left: 20px; /* Left margin */
+    color: #333; /* Color of the button */
+}
+
+/* side navigation bar */

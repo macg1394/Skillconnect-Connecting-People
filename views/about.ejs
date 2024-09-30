@@ -8,11 +8,12 @@
             <h2>Our Team</h2>
             <% team_members.forEach(member => { %>
                 <div class="team_member">
-                    <img id="member_photo" src="<%= member.image ? member.image  : '/images/default_profile_photo.jpg' %>" alt="<%= member.name %>">
+                    <img id="member_photo" src="<%= member.profile_picture ? member.profile_picture  : '/images/default_profile_photo.jpg' %>" alt="<%= member.name %>">
                     <h3><%= member.name %></h3>
                     <p><%= member.email %></p>
                 </div>
             <% }) %>
         </section>
     </main>
+    
     <%- include("partials/footer") -%>
