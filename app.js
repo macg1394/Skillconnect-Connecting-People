@@ -42,6 +42,7 @@ app.use(express.static('public'));
 
 
 app.use(require('./routes/about'));
+app.use(require('./routes/another_profile'));
 app.use(require('./routes/auth'));
 // app.use(require('./routes/contact'));
 app.use(require('./routes/home'));

@@ -14,9 +14,10 @@
                 <div class="profile-photo">
                     <img src="<%= post.profile_photo || '/images/default_profile_photo.jpg' %>" alt="Profile Photo">
                 </div>
+                <a href="javascript:void(0);" data_user_id="<%= post.user_id %>" onclick="viewProfile(this)"
+                    class="view-profile-button"><%= post.username %></a>
                 <div class="job-details">
                     <h2><%= post.title %></h2>
-                    <p><strong>Posted By:</strong> <%= post.poster %></p>
                     <p><strong>Skills:</strong> <%= post.skills %></p>
                     <p><strong>Description:</strong> <%= post.content %></p>
                     <p><strong>Posted:</strong> <%= new Date(post.created_at).toLocaleDateString() %></p>
@@ -40,7 +41,7 @@
     
     <!-- Footer Section -->
     <%- include("partials/footer") -%>
-
+    <script src="/view_profile.js"></script>
     <script>
         // Function to search for jobs
         function searchJobs() {

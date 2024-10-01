@@ -65,7 +65,8 @@ router.get('/showcase', (req, res) => {
     const query = `
         SELECT 
             showcases.image_url, 
-            users.username AS skill_seeker, 
+            users.username ,
+            users.user_id, 
             showcases.title, 
             showcases.description, 
             showcases.created_at, 
@@ -99,7 +100,7 @@ router.get('/post', (req, res) => {
             posts.content, 
             posts.created_at, 
             users.user_id,       -- Include user_id here
-            users.username AS poster, 
+            users.username, 
             users.profile_photo, 
             GROUP_CONCAT(skills.skill_name) AS skills,
             (SELECT status FROM invitations WHERE sender_id = ? AND post_id = posts.post_id LIMIT 1) AS invitation_status
