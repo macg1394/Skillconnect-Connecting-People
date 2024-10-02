@@ -1,7 +1,7 @@
 <%- include("partials/header") -%>
     <main>
         <div class="container">
-            <div class="search-container">
+            <div class="searchContainer">
                 <input type="text" id="peopleSkillSearch" placeholder="Search by skill...">
                 <button id="searchButton">Search</button>
             </div>
@@ -9,11 +9,11 @@
             <div id="peopleContainer">
                 <% if (people.length > 0) { %>
                     <% people.forEach(person => { %>
-                        <div class="person_card">
+                        <div class="personCard">
                             <img src="<%= person.profile_photo_url || '/images/default_profile_photo.jpg' %>" alt="<%= person.username %>">
                             <h3>
                              <a href="javascript:void(0);" data_user_id="<%= person.user_id %>" onclick="viewProfile(this)"
-                    class="view-profile-button"><%= person.username %></a>
+                    class="viewProfileBtn"><%= person.username %></a>
                             <p>Skills: <%= person.skills %></p>
                             <p>Email: <%= person.email %></p>
                         </div>
