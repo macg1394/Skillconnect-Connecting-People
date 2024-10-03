@@ -97,6 +97,7 @@ router.get('/post', (req, res) => {
             posts.content, 
             posts.created_at, 
             users.username, 
+            users.user_id,
             GROUP_CONCAT(skills.skill_name SEPARATOR ', ') AS skills
         FROM posts
         JOIN users ON posts.user_id = users.user_id
