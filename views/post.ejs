@@ -19,6 +19,10 @@
                         <p><strong>Skills:</strong> <%= post.skills %></p>
                         <p><strong>Description:</strong> <%= post.content %></p>
                         <p><strong>Posted:</strong> <%= new Date(post.created_at).toLocaleDateString() %></p>
+                        <button class="likeBtn" data-post-id="<%= post.post_id %>">
+                            <%= post.liked ? 'Unlike' : 'Like' %>
+                        </button>
+                        <span class="likeCount">Likes: <%= post.like_count || 0 %></span>
                     </div>
                 </div>
             <% }) %>
@@ -44,6 +48,34 @@
                 post.style.display = skill.includes(searchTerm) ? 'block' : 'none';
             });
         });
+        document.getElementById('postContainer').addEventListener('click', function (event) {
+        if (event.target.classList.contains('likeBtn')) {
+            const button = event.target;
+            const postId = button.getAttribute('data-post-id');
+            const likeCountSpan = button.nextElementSibling;
+
+            // Disable button while processing
+            button.disabled = true;
+            
+            // Send a POST request to like/unlike the post
+            fetch('/like-post', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ postId: postId }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                button.textContent = data.liked ? 'Unlike' : 'Like';
+                likeCountSpan.innerText = `Likes: ${data.like_count}`;
+            })
+            .catch(error => console.error('Error:', error))
+            .finally(() => {
+                button.disabled = false; // Re-enable the button
+            });
+        }
+    });
     </script>
 </body>
 </html>
